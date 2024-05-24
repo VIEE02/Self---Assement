@@ -1,0 +1,30 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <link href="{% static 'login/css/style2.css'%}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký Tài Khoản</title>
+</head>
+<body>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="registration-form">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Đăng Ký</button>
+        </form>
+    </div>
+    <div class="switch-form">
+        Bạn đã có tài khoản? <a href="{% url "login" %}">Đăng nhập ngay</a>
+    </div>
+</body>
+</html>
+
