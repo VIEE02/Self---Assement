@@ -1,8 +1,10 @@
 from django.urls import path
-from .views import login_view, register_view, home_view
+from .views import home_view, register_view, login_view, logout_view ,profile_view
 
 urlpatterns = [
-    path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
-    path('home/', home_view, name='home'),  # Thêm đường dẫn cho trang home
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('home/', home_view, name='home'),
+    path('profile/', profile_view, name='profile'),
 ]

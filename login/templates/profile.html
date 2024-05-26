@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang cá nhân</title>
+    <link rel="stylesheet" href="{% static 'login/css/style3.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Trang cá nhân</h1>
+        <div class="profile-container">
+            <img src="{{ profile.avatar.url }}" alt="Ảnh đại diện" class="avatar">
+            <h2 class="username">{{ profile.user.username }}</h2>
+            <p class="info">ID: {{ profile.mssv }}</p>
+            <p class="info">Điểm số: {{ profile.score }}</p>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Cập nhật">
+        </form>
+    </div>
+</body>
+</html>

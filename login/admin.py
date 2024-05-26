@@ -1,13 +1,23 @@
+
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
+from .models import Group, User, DanhGia
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
-    model = CustomUser
-    list_display = ['username', 'following_user_id', 'followed_user_id']
+class UserAdmin(BaseUserAdmin):
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Personal info', {'fields': ('mssv', 'classname', 'avatar')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2'),
+        }),
+    )
+    list_display = ('username', 'is_staff', 'is_superuser')
+    search_fields = ('username',)
+    ordering = ('username',)
 
-admin.site.register(CustomUser, CustomUserAdmin)
-
+admin.site.register(User, UserAdmin)
