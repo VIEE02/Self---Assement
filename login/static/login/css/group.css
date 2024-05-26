@@ -1,0 +1,68 @@
+@keyframes backgroundChange {
+    0% { background-color: #c0efbad0; }
+    50% { background-color: #f2f6a5d0; }
+    100% { background-color: #b9f1fed0; }
+  }
+  
+  body {
+      font-family: 'Arial', sans-serif;
+      animation: backgroundChange 10s infinite alternate;
+  }
+  
+  .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #34C759;
+      margin-bottom: 20px;
+  }
+  
+  .member-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      position: relative;
+  }
+  
+  .member-info {
+      flex: 1;
+  }
+  
+  .member-options {
+      flex: 0.2;
+      text-align: right;
+  }
+  
+  .option-btn {
+      background-color: transparent;
+      border: none;
+  }
+  .group-actions {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.add-member-btn {
+    background-color: #007bff;
+    color: #fff;
+    margin-left: 5px;
+}
+
+.delete-group-btn {
+    background-color: #ff0000;
+    color: #fff;
+    margin-right: 5px;
+}

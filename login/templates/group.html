@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'login/css/group.css' %}">
+    <title>Nhóm</title>
+    <script src="{%static 'login/js/myscript.js'%}"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">NHÓM {{ group.groupname }}</h1>
+        <h2 class="title">Tạo ngày {{ group.created_at }}</h2>
+    </div>
+    <div class="group-actions">
+        <button class="add-member-btn">Thêm thành viên</button>
+        <form method="post">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+            <input type="hidden" name="action" value="add">
+            <button type="submit">Add Member</button>
+        </form>
+        <div style="flex-grow: 1;"></div>
+        <button class="delete-group-btn">Xóa nhóm</button>
+        <form method="post">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+            <input type="hidden" name="action" value="remove">
+            <button type="submit">Remove Member</button>
+        </form>
+    </div>
+    <div class="member-container">
+        <div class="member-info">
+            <ul>
+                {% for member in members %}
+                    <li>Họ tên: {{ member.username }}</li>
+                    <li>MSSV: {{ member.mssv }}</li>
+                    <li>Tên lớp: {{ member.classname }}</li>
+                {% endfor %}
+            </ul>
+        </div> 
+         <div class="member-options">
+             <button class="option-btn">
+                <div class="options">
+                    <button class="rate-btn">Đánh giá</button>
+                    <button class="remove-btn">Xóa khỏi nhóm</button>
+                </div>
+            </button>
+        </div>
+    </div>
+    <div class="member-container">
+        <div class="member-info">
+            <span>Họ tên: {{ user.username }}</span>
+            <span>MSSV: {{ user.mssv }}</span>
+            <span>Tên lớp: {{ user.classname }}</span>
+        </div> 
+         <div class="member-options">
+             <button class="option-btn">
+                <div class="options">
+                    <button class="rate-btn">Đánh giá</button>
+                    <button class="remove-btn">Xóa khỏi nhóm</button>
+                </div>
+            </button>
+        </div>
+    </div>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+        <!-- Thêm thêm các thành viên vào đây -->
+</body>
+</html>

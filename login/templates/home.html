@@ -1,6 +1,14 @@
 {%extends 'base.html'%}
 {%load static%}
 {%block banner_slider%}
+<button onclick="showForm()">Create Group</button>
+    <div id="groupForm" style="display:none;">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 <div id="carouselExampleCaptions" class="carousel slide">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>

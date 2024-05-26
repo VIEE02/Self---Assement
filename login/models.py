@@ -27,8 +27,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     classname = models.TextField(blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     password = models.CharField(max_length=128)
-    following_user_id = models.IntegerField(blank=True, null=True)
-    followed_user_id = models.IntegerField(blank=True, null=True)
+    following_user_id = models.CharField(max_length=512,blank=True, null=True)
+    followed_user_id = models.CharField(max_length=512,blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     is_active = models.BooleanField(default=True)
@@ -54,8 +54,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Group(models.Model):
-    following_user_id = models.IntegerField()
-    followed_user_id = models.IntegerField()
+    following_user_id = models.IntegerField(blank=True,null=True)
+    followed_user_id = models.IntegerField(blank=True,null=True)
     groupname = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
