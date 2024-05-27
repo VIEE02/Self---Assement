@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đánh Giá Thành Viên Trong Nhóm</title>
+    <link rel="stylesheet" href="style6.css">
+</head>
+<body>
+    <header>
+        <h2 class="page-title">Những thành viên đã đánh giá</h2>
+    </header>
+    <main>
+        <div class="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Thành Viên</th>
+                        <th>Hiệu Suất Công Việc</th>
+                        <th>Tương Tác Trong Nhóm</th>
+                        <th>Tính Cống Hiến</th>
+                    </tr>
+                </thead>
+                <tbody id="evaluationTableBody">
+                    {% for evaluation in evaluations %}
+                        <li>
+                            <strong>Title:</strong> {{ evaluation.title }}<br>
+                            <strong>Đánh giá:</strong> {{ evaluation.danhgia }}<br>
+                            <strong>Score:</strong> {{ evaluation.score }}<br>
+                            <strong>Created At:</strong> {{ evaluation.created_at }}<br>
+                            <strong>Evaluated Member ID:</strong> {{ evaluation.user_id }}<br>
+                            <strong>Người đánh giá :</strong> {{evaluation.nguoidanhgia}}
+                        </li>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

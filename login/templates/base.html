@@ -43,13 +43,15 @@
                 Các nhóm của bạn
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Nhóm A</a></li>
-                <li><a class="dropdown-item" href="#">Nhóm B</a></li>
-                <li><a class="dropdown-item" href="#">Nhóm C</a></li>
+                  {% for group in groups %}
+                    <li>
+                        <a href="{% url 'group' group_id=group.id %}">Nhóm {{ group.groupname }}</a>
+                    </li>
+                  {% endfor %}
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Lịch sử</a>
+              <a class="nav-link" href="{% url "user_evaluations" %}">Xem đánh giá</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Cài đặt</a>

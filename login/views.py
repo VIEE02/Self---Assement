@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import Group, User
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, GroupCreationForm, ProfileUpdateForm
+from .models import DanhGia, Group, User
+from .forms import CustomUserCreationForm, CustomAuthenticationForm, EvaluationForm, GroupCreationForm, ProfileUpdateForm
 
 def update_comma_separated_field(field, value, remove=False):
     if not field:
@@ -50,6 +50,12 @@ def logout_view(request):
 
 @login_required
 def home_view(request):
+    user = request.user
+    following_user_ids = user.following_user_id.split(',') if user.following_user_id else []
+    followed_user_ids = user.followed_user_id.split(',') if user.followed_user_id else []
+    accessible_group_ids = set(following_user_ids + followed_user_ids)
+
+    groups = Group.objects.filter(id__in=accessible_group_ids)
     if request.method == 'POST':
         form = GroupCreationForm(request.POST)
         if form.is_valid():
@@ -65,20 +71,29 @@ def home_view(request):
             return redirect('group', group_id=group.id)
     else:
         form = GroupCreationForm()
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'home.html', {'form': form, 'groups': groups})
 
 @login_required
 def group_view(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     user = request.user
-    user_following_groups = user.following_user_ids.split(',') if user.following_user_ids else []
-    user_followed_groups = user.followed_user_ids.split(',') if user.followed_user_ids else []
+    user_following_groups = user.following_user_id.split(',') if user.following_user_id else []
+    user_followed_groups = user.followed_user_id.split(',') if user.followed_user_id else []
     if str(group_id) not in user_following_groups and str(group_id) not in user_followed_groups:
         messages.error(request, "Bạn không phải là một thành viên của nhóm này.")
         return redirect('home')
     if request.method == 'POST':
         username = request.POST.get('username')
         action = request.POST.get('action')
+        if 'delete_group' in request.POST:
+            users = User.objects.all()
+            for user in users:
+                user.following_user_ids = update_comma_separated_field(user.following_user_id, group_id, remove=True)
+                user.followed_user_ids = update_comma_separated_field(user.followed_user_id, group_id, remove=True)
+                user.save()
+            group.delete()
+            messages.success(request, "The group has been deleted.")
+            return redirect('home')
         try:
             user = User.objects.get(username=username)
             if action == 'add':
@@ -103,3 +118,47 @@ def profile_view(request):
     else:
         form = ProfileUpdateForm(instance=request.user)
     return render(request, 'profile.html', {'form': form})
+
+@login_required
+def evaluate_member_view(request, group_id, member_id):
+    group = get_object_or_404(Group, id=group_id)
+    member = get_object_or_404(User, id=member_id)
+    user = request.user
+    user_following_groups = user.following_user_id.split(',') if user.following_user_id else []
+    user_followed_groups = user.followed_user_id.split(',') if user.followed_user_id else []
+    if str(group_id) not in user_following_groups and str(group_id) not in user_followed_groups:
+        messages.error(request, "Bạn không phải là một thành viên của nhóm này.")
+        return redirect('home')
+    if request.method == 'POST':
+        form = EvaluationForm(request.POST)
+        if form.is_valid():
+            score1 = form.cleaned_data['score1']
+            score2 = form.cleaned_data['score2']
+            score3 = form.cleaned_data['score3']
+            average_score = (score1 + score2 + score3) / 3
+            evaluation = form.save(commit=False)
+            evaluation.groupid = group.id
+            evaluation.user_id = member.id
+            evaluation.score = average_score
+            evaluation.nguoidanhgia = member.fullname
+            evaluation.save()
+            messages.success(request, f"Evaluation for {member.username} has been submitted.")
+            return redirect('group', group_id)
+        else:
+            print(form.errors)  # Debug: Print form errors to the console
+    else:
+        form = EvaluationForm()
+
+    return render(request, 'danhgia.html', {'group': group, 'member': member, 'form': form})
+
+@login_required
+def user_evaluations_view(request):
+    user = request.user
+    evaluations = DanhGia.objects.filter(user_id=user.id)
+    return render(request, 'nhom.html', {'evaluations': evaluations})
+
+@login_required
+def group_summary_view(request,group_id):
+    group = get_object_or_404(Group, id=group_id)
+    evaluations = DanhGia.objects.filter(groupid=group_id)
+    return render(request, 'groupdanhgia.html', {'group': group, 'evaluations': evaluations})

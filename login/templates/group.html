@@ -13,6 +13,11 @@
         <h1 class="title">NHÓM {{ group.groupname }}</h1>
         <h2 class="title">Tạo ngày {{ group.created_at }}</h2>
     </div>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="delete_group" value="true">
+        <button type="submit" style="color: red;">Xoá Nhóm</button>
+    </form>
     <div class="group-actions">
         <button class="add-member-btn">Thêm thành viên</button>
         <form method="post">
@@ -47,6 +52,14 @@
                 <div class="options">
                     <button class="rate-btn">Đánh giá</button>
                     <button class="remove-btn">Xóa khỏi nhóm</button>
+                    <ul>    
+                        {% for member in members %}
+                            <li>
+                                {{ member.username }}
+                                <a href="{% url 'evaluate_member' group_id=group.id member_id=member.id %}">Đánh giá</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </button>
         </div>
@@ -66,6 +79,9 @@
             </button>
         </div>
     </div>
+    <a href="{% url 'group_summary' group_id=group.id %}">
+        <button>View Evaluation Summary</button>
+    </a>
     {% if messages %}
         <ul>
             {% for message in messages %}

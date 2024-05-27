@@ -23,8 +23,9 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
-    mssv = models.TextField(blank=True, null=True)
-    classname = models.TextField(blank=True, null=True)
+    mssv = models.CharField(max_length=255,blank=True, null=True)
+    classname = models.CharField(max_length=255,blank=True, null=True)
+    fullname = models.CharField(max_length=255,blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     password = models.CharField(max_length=128)
     following_user_id = models.CharField(max_length=512,blank=True, null=True)
@@ -64,7 +65,7 @@ class Group(models.Model):
 
 
 class DanhGia(models.Model):
-    groupid = models.ForeignKey(Group, on_delete=models.CASCADE)
+    groupid = models.IntegerField()
     title = models.CharField(max_length=255)
     danhgia = models.TextField(verbose_name='Đánh giá')
     user_id = models.IntegerField()
@@ -72,8 +73,9 @@ class DanhGia(models.Model):
     score1 = models.IntegerField()
     score2 = models.IntegerField()
     score3 = models.IntegerField()
-    score = models.FloatField()
+    score = models.FloatField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    nguoidanhgia = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'danhgia'
