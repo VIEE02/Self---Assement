@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'login/css/group.css' %}">
-    <title>Nhóm</title>
+    <title>Nhóm {{ group.groupname }}</title>
     <script src="{%static 'login/js/myscript.js'%}"></script>
 </head>
 <body>
@@ -19,62 +19,40 @@
         <button type="submit" style="color: red;">Xoá Nhóm</button>
     </form>
     <div class="group-actions">
-        <button class="add-member-btn">Thêm thành viên</button>
         <form method="post">
             {% csrf_token %}
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
             <input type="hidden" name="action" value="add">
-            <button type="submit">Add Member</button>
+            <button class="add-member-btn" type="submit">Add Member</button>
         </form>
         <div style="flex-grow: 1;"></div>
-        <button class="delete-group-btn">Xóa nhóm</button>
         <form method="post">
             {% csrf_token %}
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
             <input type="hidden" name="action" value="remove">
-            <button type="submit">Remove Member</button>
+            <button class="delete-group-btn" type="submit">Xoá Thành Viên</button>
         </form>
     </div>
     <div class="member-container">
         <div class="member-info">
             <ul>
                 {% for member in members %}
-                    <li>Họ tên: {{ member.username }}</li>
-                    <li>MSSV: {{ member.mssv }}</li>
-                    <li>Tên lớp: {{ member.classname }}</li>
+                    <li>Họ tên: {{ member.fullname }}  MSSV: {{ member.mssv }}  Tên lớp: {{ member.classname }}</li>
                 {% endfor %}
             </ul>
         </div> 
          <div class="member-options">
              <button class="option-btn">
                 <div class="options">
-                    <button class="rate-btn">Đánh giá</button>
-                    <button class="remove-btn">Xóa khỏi nhóm</button>
                     <ul>    
                         {% for member in members %}
                             <li>
-                                {{ member.username }}
-                                <a href="{% url 'evaluate_member' group_id=group.id member_id=member.id %}">Đánh giá</a>
+                                <button class="rate-btn" href="{% url 'evaluate_member' group_id=group.id member_id=member.id %}">Đánh giá</button>
                             </li>
                         {% endfor %}
                     </ul>
-                </div>
-            </button>
-        </div>
-    </div>
-    <div class="member-container">
-        <div class="member-info">
-            <span>Họ tên: {{ user.username }}</span>
-            <span>MSSV: {{ user.mssv }}</span>
-            <span>Tên lớp: {{ user.classname }}</span>
-        </div> 
-         <div class="member-options">
-             <button class="option-btn">
-                <div class="options">
-                    <button class="rate-btn">Đánh giá</button>
-                    <button class="remove-btn">Xóa khỏi nhóm</button>
                 </div>
             </button>
         </div>

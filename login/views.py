@@ -88,8 +88,8 @@ def group_view(request, group_id):
         if 'delete_group' in request.POST:
             users = User.objects.all()
             for user in users:
-                user.following_user_ids = update_comma_separated_field(user.following_user_id, group_id, remove=True)
-                user.followed_user_ids = update_comma_separated_field(user.followed_user_id, group_id, remove=True)
+                user.following_user_id = update_comma_separated_field(user.following_user_id, group_id, remove=True)
+                user.followed_user_id = update_comma_separated_field(user.followed_user_id, group_id, remove=True)
                 user.save()
             group.delete()
             messages.success(request, "The group has been deleted.")

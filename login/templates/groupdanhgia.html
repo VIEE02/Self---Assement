@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đánh Giá Thành Viên Trong Nhóm</title>
-    <link rel="stylesheet" href="style6.css">
+    <link rel="stylesheet" href="{% static 'login/css/style6.css' %}">
 </head>
 <body>
     <header>
@@ -15,26 +16,31 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID Thành Viên</th>
-                        <th>Hiệu Suất Công Việc</th>
-                        <th>Tương Tác Trong Nhóm</th>
-                        <th>Tính Cống Hiến</th>
+                        <th>ID Thành Viên Được Đánh Giá</th>
+                        <th>Tiêu Đề</th>
+                        <th>Đánh Giá</th>
+                        <th>Điểm</th>
+                        <th>Ngày Tạo</th>
+                        <th>ID Người Đánh Giá</th>
+                        <th>Người Đánh Giá</th>
                     </tr>
                 </thead>
                 <tbody id="evaluationTableBody">
                     {% for evaluation in evaluations %}
-                        <li>
-                            <strong>Title:</strong> {{ evaluation.title }}<br>
-                            <strong>Đánh giá:</strong> {{ evaluation.danhgia }}<br>
-                            <strong>Score:</strong> {{ evaluation.score }}<br>
-                            <strong>Created At:</strong> {{ evaluation.created_at }}<br>
-                            <strong>Evaluated Member ID:</strong> {{ evaluation.user_id }}<br>
-                            <strong>Người đánh giá :</strong> {{evaluation.nguoidanhgia}}
-                        </li>
+                        <tr>
+                            <td>{{ evaluation.user_id }}</td>
+                            <td>{{ evaluation.title }}</td>
+                            <td>{{ evaluation.danhgia }}</td>
+                            <td>{{ evaluation.score }}</td>
+                            <td>{{ evaluation.created_at }}</td>
+                            <td>{{ user.id }}</td>
+                            <td>{{ evaluation.nguoidanhgia }}</td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </main>
+    <button class="back-button" onclick="window.location.href='{% url 'group' group_id=group.id %}'">Trở về nhà</button>
 </body>
 </html>

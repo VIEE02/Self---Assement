@@ -45,9 +45,18 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   {% for group in groups %}
                     <li>
-                        <a href="{% url 'group' group_id=group.id %}">Nhóm {{ group.groupname }}</a>
+                        <a class="dropdown-item" href="{% url 'group' group_id=group.id %}">Nhóm {{ group.groupname }}</a>
                     </li>
                   {% endfor %}
+                  <li><hr class="dropdown-divider"></li>
+                  <button onclick="showForm()">Tạo nhóm mới</button>
+                    <div class="dropdown-item" id="groupForm" style="display:none;">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit">Xác nhận</button>
+                        </form>
+                    </div>
               </ul>
             </li>
             <li class="nav-item">
